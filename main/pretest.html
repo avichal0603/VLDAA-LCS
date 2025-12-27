@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DP Lab Simulation | Pre-test</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/pretestStyle.css">
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <div class="test-icon">
+                    <i class="fas fa-clipboard-check"></i>
+                </div>
+                <div class="header-text">
+                    <h1>Dynamic Programming Lab - Pre-test</h1>
+                    <p>Test your foundational knowledge of DP concepts before the lab simulation</p>
+                </div>
+            </div>
+            <div class="progress-container">
+                <div class="progress-info">
+                    <span>Question <span id="current-question">1</span>/<span id="total-questions">10</span></span>
+                    <span><span id="correct-count">0</span> Correct</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="main-container">
+        <!-- Question Panel -->
+        <div class="question-panel">
+            <div class="question-header">
+                <div class="question-number" id="question-number">Question 1</div>
+                <div class="question-text" id="question-text">
+                    What is a <i>subsequence</i> of a string?
+                </div>
+            </div>
+            
+            <div class="options-grid" id="options-container">
+                <!-- Options will be populated by JavaScript -->
+            </div>
+            
+            <!-- Feedback Area -->
+            <div class="feedback-area" id="feedback-area">
+                <div class="feedback-text" id="feedback-text">
+                    <i class="fas fa-check-circle"></i> Correct!
+                </div>
+                <div class="feedback-explanation" id="feedback-explanation">
+                    Explanation will appear here.
+                </div>
+            </div>
+            
+            <!-- Navigation -->
+            <div class="navigation">
+                <button class="btn btn-secondary" id="prev-btn" disabled>
+                    <i class="fas fa-arrow-left"></i> Previous
+                </button>
+                <button class="btn btn-primary" id="next-btn" disabled>
+                    Next Question <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Visualization Panel -->
+        <div class="visualization-panel">
+            <div class="visualization-header">
+                <div class="visual-title">
+                    <i class="fas fa-lightbulb"></i> Concept Visualization
+                </div>
+                <div class="visual-subtitle" id="visual-subtitle">
+                    Select an option to see detailed explanation
+                </div>
+            </div>
+            <div class="visual-content" id="visual-content">
+                <div class="default-visualization">
+                    <i class="fas fa-mouse-pointer"></i>
+                    <h3>Select an Answer</h3>
+                    <p>Choose one of the options to see detailed explanation and visualization here.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Results Overlay -->
+    <div class="results-overlay" id="results-overlay">
+        <div class="results-card">
+            <div class="results-icon">
+                <i class="fas fa-trophy"></i>
+            </div>
+            <h2>Pre-test Completed!</h2>
+            <div class="score-display" id="final-score">0/10</div>
+            <div class="score-text" id="score-message">Your score will appear here</div>
+            <div class="feedback" id="final-feedback" style="margin: 20px 0; font-weight: 600;"></div>
+            <p style="margin-bottom: 30px;" id="completion-message">You are now ready to proceed to the Dynamic Programming Lab Simulation.</p>
+            <div style="display: flex; gap: 15px; justify-content: center;">
+                <button class="btn btn-secondary" id="retake-btn">
+                    <i class="fas fa-redo"></i> Retake Test
+                </button>
+                <button class="btn btn-primary" id="proceed-btn" style="display: none;">
+                    Proceed to Lab <i class="fas fa-flask"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/pretestScript.js"></script>
+</body>
+</html>

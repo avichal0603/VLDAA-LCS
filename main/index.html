@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Virtual DP Lab – LCS Visualizer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="/css/mainpageStyle.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <div class="app-shell">
+    <div class="app-content">
+      <header class="app-header">
+        <div class="title-block">
+          <div class="title-row">
+            <div class="app-title">
+              <i class="fas fa-code-branch"></i>
+              <span class="title-text">LCS Virtual Lab - DEI</span>
+              <span class="icon-dot"></span>
+            </div>
+            <div class="app-title-pill">Dayalbagh Educational Institute, Faculty of Engineering.</div>
+          </div>
+          <div class="title-sub">
+            Longest Common Subsequence – Compare algorithms and visualize backtracking
+          </div>
+        </div>
+        <div class="header-right">
+          <div class="badge-soft" id="modeToggle">
+            <i class="fas fa-graduation-cap"></i>
+            Interactive Learning Mode
+          </div>
+          <div class="theme-toggle" id="themeToggle">
+            <span class="theme-toggle-icon" id="themeIcon">🌙</span>
+            <span class="theme-toggle-text" id="themeText">Dark</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Mode Selection Modal -->
+      <div class="modal-overlay" id="modeModal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3><i class="fas fa-graduation-cap"></i> Select Learning Mode</h3>
+            <button class="modal-close" id="closeModal">&times;</button>
+          </div>
+          <div class="modal-body">
+            <div class="mode-option" data-mode="main">
+              <div class="mode-icon">
+                <i class="fas fa-play-circle"></i>
+              </div>
+              <div class="mode-info">
+                <h4>Main Visualizer</h4>
+                <p>Interactive visualization of LCS algorithms with step-by-step guidance</p>
+              </div>
+            </div>
+            <div class="mode-option" data-mode="pretest">
+              <div class="mode-icon">
+                <i class="fas fa-clipboard-check"></i>
+              </div>
+              <div class="mode-info">
+                <h4>Pre-Test</h4>
+                <p>Test your understanding before learning the concepts</p>
+              </div>
+            </div>
+            <div class="mode-option" data-mode="posttest">
+              <div class="mode-icon">
+                <i class="fas fa-chart-line"></i>
+              </div>
+              <div class="mode-info">
+                <h4>Post-Test</h4>
+                <p>Assess your learning after completing the visualization</p>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="modal-btn secondary" id="cancelModal">Cancel</button>
+          </div>
+        </div>
+      </div>
+
+      <main class="layout">
+        <!-- Left panel: inputs, controls, explanation -->
+        <section class="panel">
+          <div class="panel-header">
+            <div class="panel-title">
+              <i class="fas fa-sliders-h"></i>
+              Inputs · Control
+            </div>
+          </div>
+
+          <div class="algorithm-selector">
+            <div class="algo-tab active" data-algo="standard">
+              <i class="fas fa-table"></i>
+              Standard O(n²)
+            </div>
+            <div class="algo-tab" data-algo="rolling">
+              <i class="fas fa-layer-group"></i>
+              Rolling Array O(n)
+            </div>
+            <div class="algo-tab" data-algo="hirschberg">
+              <i class="fas fa-code-branch"></i>
+              Hirschberg O(n)
+            </div>
+          </div>
+          <div class="algo-info" id="algoInfo">
+            <strong><i class="fas fa-info-circle"></i> Standard DP:</strong> Builds full DP table, O(n²) space, allows full backtracking
+          </div>
+
+          <div class="inputs-group">
+            <div class="input-row">
+              <label for="seqA">
+                <span><i class="fas fa-font"></i> Sequence A</span>
+                <span class="key">A[1..n]</span>
+              </label>
+              <input
+                id="seqA"
+                type="text"
+                placeholder="e.g. AGGTAB"
+                autocomplete="off"
+              />
+            </div>
+
+            <div class="input-row">
+              <label for="seqB">
+                <span><i class="fas fa-font"></i> Sequence B</span>
+                <span class="key">B[1..m]</span>
+              </label>
+              <input
+                id="seqB"
+                type="text"
+                placeholder="e.g. GXTXAYB"
+                autocomplete="off"
+              />
+              <div class="hint-text">
+                <i class="fas fa-lightbulb"></i> Start with short strings (5-8 chars) to see the algorithm clearly
+              </div>
+            </div>
+
+            <div class="preset-row">
+              <div class="chip" data-preset="classic">
+                <i class="fas fa-star"></i> Classic
+              </div>
+              <div class="chip" data-preset="match-heavy">
+                <i class="fas fa-handshake"></i> Match-heavy
+              </div>
+              <div class="chip" data-preset="almost-equal">
+                <i class="fas fa-equals"></i> Almost equal
+              </div>
+              <div class="chip" data-preset="simple">
+                <i class="fas fa-baby"></i> Simple
+              </div>
+            </div>
+          </div>
+
+          <div class="controls-row" style="margin-top: 6px;">
+            <button id="initBtn" class="primary">
+              <i class="fas fa-play"></i> Initialize
+            </button>
+            <button id="stepBtn">
+              <i class="fas fa-step-forward"></i> Step
+            </button>
+            <button id="playBtn">
+              <i class="fas fa-play-circle"></i> Auto-play
+            </button>
+            <button id="pauseBtn">
+              <i class="fas fa-pause"></i> Pause
+            </button>
+            <button id="resetBtn">
+              <i class="fas fa-redo"></i> Reset
+            </button>
+          </div>
+
+          <div class="slider-row premium-slider">
+            <span><i class="fas fa-tachometer-alt"></i> Speed</span>
+            <div class="slider-container">
+              <div class="premium-slider-track">
+                <div class="premium-slider-fill" id="sliderFill"></div>
+              </div>
+              <input 
+                class="premium-slider-input" 
+                id="speedSlider" 
+                type="range" 
+                min="20" 
+                max="1500" 
+                step="20" 
+                value="500"
+              />
+              <div class="premium-slider-thumb" id="sliderThumb"></div>
+            </div>
+            <span class="slider-value" id="speedLabel">500ms</span>
+            
+            <div class="premium-slider-marks" id="speedMarks">
+              <div class="slider-mark" data-value="20">20ms</div>
+              <div class="slider-mark" data-value="150">150ms</div>
+              <div class="slider-mark" data-value="500">500ms</div>
+              <div class="slider-mark" data-value="1000">1s</div>
+              <div class="slider-mark" data-value="1500">1.5s</div>
+            </div>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-label">
+                <i class="fas fa-ruler"></i> Lengths (n, m)
+              </div>
+              <div class="stat-value"><span id="stats-n">0</span>, <span id="stats-m">0</span></div>
+              <div class="stat-badge">Size</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">
+                <i class="fas fa-memory"></i> Space
+              </div>
+              <div class="stat-value"><span id="stats-space">0</span></div>
+              <div class="stat-badge">Complexity</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">
+                <i class="fas fa-tasks"></i> Progress
+              </div>
+              <div class="stat-value"><span id="stats-step">0</span>/<span id="stats-total">0</span></div>
+              <div class="stat-badge">Steps</div>
+            </div>
+          </div>
+
+          <div class="explanation-box">
+            <div class="explanation-title">
+              <span><i class="fas fa-comment-alt"></i> Step explanation</span>
+              <span class="help-icon" title="This shows what's happening in the current step">
+                <i class="fas fa-question"></i>
+              </span>
+            </div>
+            <div id="explanation-text">
+              Enter two sequences and click "Initialize" to begin. Watch the characters compare step-by-step above the DP table!
+            </div>
+            <div class="lcs-output-row">
+              <div>
+                <i class="fas fa-ruler-vertical"></i> LCS length:
+                <span id="lcs-length">0</span>
+              </div>
+              <div>
+                <i class="fas fa-code"></i> LCS:
+                <span id="lcs-string">–</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Right panel: visualization -->
+        <section class="panel">
+          <div class="panel-header">
+            <div class="panel-title">
+              <i class="fas fa-eye"></i> Visualization
+            </div>
+            <div class="panel-subtitle">
+              Watch characters being compared, then see the DP table update
+            </div>
+          </div>
+
+          <div class="right-panel-content">
+            <!-- Visual character comparison -->
+            <div class="visual-comparison" id="visualComparison">
+              <div class="comparison-title">
+                <span><i class="fas fa-exchange-alt"></i> Character Comparison</span>
+                <span class="help-icon" title="See which characters are being compared in the current step">
+                  <i class="fas fa-question"></i>
+                </span>
+              </div>
+              <div class="comparison-strings">
+                <div class="string-display">
+                  <div class="string-label">
+                    <span><i class="fas fa-stream"></i> Sequence A:</span>
+                    <span style="color: var(--accent);">n = <span id="vis-lenA">0</span></span>
+                  </div>
+                  <div class="string-chars" id="charsA"></div>
+                </div>
+                <div class="comparison-arrow" id="comparisonArrow">
+                  <i class="fas fa-arrow-down"></i> Comparing...
+                </div>
+                <div class="string-display">
+                  <div class="string-label">
+                    <span><i class="fas fa-stream"></i> Sequence B:</span>
+                    <span style="color: #a78bfa;">m = <span id="vis-lenB">0</span></span>
+                  </div>
+                  <div class="string-chars" id="charsB"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="dp-wrapper">
+              <div class="dp-header-row">
+                <div id="dp-table-title">
+                  <i class="fas fa-table"></i> DP Table dp[i][j]
+                </div>
+                <div class="legend-row">
+                  <div class="legend-chip">
+                    <span class="legend-color base"></span>
+                    base
+                  </div>
+                  <div class="legend-chip">
+                    <span class="legend-color match"></span>
+                    match
+                  </div>
+                  <div class="legend-chip">
+                    <span class="legend-color current"></span>
+                    current
+                  </div>
+                  <div class="legend-chip">
+                    <span class="legend-color trace"></span>
+                    trace
+                  </div>
+                </div>
+              </div>
+
+              <!-- Fixed layout: DP table on left, pseudocode on right -->
+              <div class="dp-visualization-area">
+                <div class="dp-table-section">
+                  <div class="dp-table-container">
+                    <div class="dp-table-scroll" id="dp-table-container">
+                      <!-- DP table rendered here -->
+                    </div>
+                  </div>
+                </div>
+
+                <div class="code-section">
+                  <div class="code-box">
+                    <div class="code-title-row">
+                      <span><i class="fas fa-code"></i> Pseudocode</span>
+                      <span id="code-description">Standard DP</span>
+                    </div>
+                    <div class="code-lines" id="codeLines">
+                      <!-- Code will be inserted here based on algorithm -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Backtracking visualization -->
+              <div class="backtracking-visual" id="backtrackingVisual">
+                <div class="backtracking-title">
+                  <span><i class="fas fa-sitemap"></i> Backtracking Path</span>
+                  <span class="help-icon" title="Shows the path taken to recover the LCS from the DP table">
+                    <i class="fas fa-question"></i>
+                  </span>
+                </div>
+                <div class="backtracking-path" id="backtrackingPath">
+                  <!-- Backtracking path will be rendered here -->
+                  <div style="color: var(--text-muted); font-size: 9px; padding: 10px; text-align: center;">
+                    <i class="fas fa-info-circle"></i> Backtracking will appear here after DP table is filled
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer>
+        <span>
+          <i class="fas fa-lightbulb"></i> Tip: Watch the character boxes highlight to see comparisons before the table updates!
+        </span>
+        <span>
+          <i class="fas fa-desktop"></i> Best viewed with short strings (5-10 characters) for clear visualization
+        </span>
+      </footer>
+    </div>
+  </div>
+
+  <script src="/js/mainpageScript.js"></script>
+</body>
+</html>
